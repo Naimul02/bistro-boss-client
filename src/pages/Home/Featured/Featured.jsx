@@ -3,13 +3,13 @@ import featuredImg from "../../../assets/home/featured.jpg";
 import "./Featured.css";
 const Featured = () => {
   return (
-    <div className="featured-item text-white pt-8 my-20">
+    <div className="featured-item bg-fixed text-white pt-8 my-20">
       <SectionTitle
         heading="Featured Item"
         subHeading="check it out"
       ></SectionTitle>
 
-      <div className="md:flex items-center justify-center pb-20 pt-12 px-36">
+      <div className="md:flex items-center justify-center bg-black opacity-40 pb-20 pt-12 px-36">
         <div>
           <img src={featuredImg} alt="" />
         </div>
@@ -24,7 +24,9 @@ const Featured = () => {
             excepturi aut expedita veniam nam aspernatur enim accusantium
             consequatur cupiditate itaque dolorem odit? Atque!
           </p>
-          <button className="btn btn-outline">Order Now</button>
+          <button className="btn btn-outline border border-b-4 mt-4 btn-primary">
+            Order Now
+          </button>
         </div>
       </div>
     </div>
