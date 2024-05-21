@@ -1,14 +1,16 @@
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProviders";
+import Swal from "sweetalert2";
 const Signup = () => {
-  const { createUser } = useContext(AuthContext);
+  const { createUser, updateUserProfile } = useContext(AuthContext);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -17,6 +19,20 @@ const Signup = () => {
     createUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
+        updateUserProfile(data.name, data.photoURL)
+          .then(() => {
+            console.log("user profile info updated");
+            reset();
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "User created successfully",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            navigate("/");
+          })
+          .catch((error) => console.log(error));
       })
       .catch((error) => {
         console.error(error.message);
@@ -53,6 +69,21 @@ const Signup = () => {
                   required
                 />
                 {errors.name && (
+                  <span className="text-red-600">Name is required</span>
+                )}
+              </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Photo URL</span>
+                </label>
+                <input
+                  type="text"
+                  {...register("photoURL", { required: true })}
+                  placeholder="Photo URL"
+                  className="input input-bordered"
+                  required
+                />
+                {errors.photoURL && (
                   <span className="text-red-600">Name is required</span>
                 )}
               </div>
