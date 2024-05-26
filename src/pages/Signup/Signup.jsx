@@ -4,9 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProviders";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import SocialLogin from "../../components/SocialLogin/SocialLogin";
 const Signup = () => {
   const { createUser, updateUserProfile } = useContext(AuthContext);
   const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
   const {
     register,
     handleSubmit,
@@ -21,16 +24,23 @@ const Signup = () => {
         console.log(result.user);
         updateUserProfile(data.name, data.photoURL)
           .then(() => {
-            console.log("user profile info updated");
-            reset();
-            Swal.fire({
-              position: "top-end",
-              icon: "success",
-              title: "User created successfully",
-              showConfirmButton: false,
-              timer: 1500,
+            const userInfo = {
+              name: data.name,
+              email: data?.email,
+            };
+            axiosPublic.post("/users", userInfo).then((res) => {
+              if (res.data.insertedId) {
+                reset();
+                Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title: "User created successfully",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+                navigate("/");
+              }
             });
-            navigate("/");
           })
           .catch((error) => console.log(error));
       })
@@ -150,9 +160,10 @@ const Signup = () => {
                 />
               </div>
             </form>
-            <p>
+            <p className="px-6">
               Already have an account ? <Link to="/login">Login</Link>
             </p>
+            <SocialLogin></SocialLogin>
           </div>
         </div>
       </div>

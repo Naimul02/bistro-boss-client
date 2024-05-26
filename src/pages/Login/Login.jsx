@@ -8,6 +8,7 @@ import {
 } from "react-simple-captcha";
 import { AuthContext } from "../../providers/AuthProviders";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import SocialLogin from "../../components/SocialLogin/SocialLogin";
 const Login = () => {
   const { signIn } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -132,11 +133,15 @@ const Login = () => {
                 />
               </div>
             </form>
-            <p>
+            <p className="px-6">
               New here ? <Link to="/signup">Signup</Link>
             </p>
+
+            <SocialLogin></SocialLogin>
           </div>
         </div>
+
+        
       </div>
     </>
   );
